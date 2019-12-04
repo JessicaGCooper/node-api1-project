@@ -67,7 +67,7 @@ server.get("/api/users/:id", (req, res) => {
       });
 });
 
-//PUT
+//PUT (succusfully tested in insomnia)
 server.put("/api/users/:id", (req, res) => {
   const id = req.params.id
   const {name, bio} = req.body
@@ -95,7 +95,25 @@ server.put("/api/users/:id", (req, res) => {
 });
 
 
+//Delete
+server.delete("/api/users/:id", (req, res) => {
+  const id = req.params.id
 
+  db.remove(id)
+    .then(users => {
+      if(users > 0 && users === 1) {
+          res.status(200).json({message: `The user with ID number ${id} has been successfully removed.`})
+      } else {
+          res.status(404).json({ message: "The User with the specified ID does not exist." })
+      }
+    })
+    .catch (error => {
+        console.log("error on DELETE /users/:id", error);
+        res
+        .status(500)
+        .json({ error: "The user could not be removed." })
+    });
+});
 
 
 
