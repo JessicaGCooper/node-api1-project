@@ -16,7 +16,7 @@ server.post("/api/users", (req, res) => {
     
     db.insert(req.body)
     .then(user => { 
-      if (!req.body.name || !req.body.bio){
+      if (!name || !bio){
       res.status(400).json({ errorMessage: "Please provide name and bio for the user." })
       } else {
       db.findById(user.id)  
@@ -26,9 +26,8 @@ server.post("/api/users", (req, res) => {
       }
     })
     .catch(error => {
-      res.status(500).json({
-        error: "There was an error while saving the user to the database"
-       })
+      res.status(500)
+        .json({ errorMessage: "There was an error while saving the user to the database", error })
     });
 });
 
@@ -76,7 +75,7 @@ server.put("/api/users/:id", (req, res) => {
   .then(users => { if (!users){
     res.status(404)
     .json({ message: "The User with the specified ID does not exist." })
-    } else if (!req.body.name || !req.body.bio){
+    } else if (!name || !bio){
     res.status(400)
     .json({ errorMessage: "Please provide name and bio for the user." })
     } else {
@@ -88,9 +87,9 @@ server.put("/api/users/:id", (req, res) => {
     }
   })
   .catch(error => {
-    res.status(500).json({
-      error: "There was an error while saving the user to the database"
-     })
+    res
+      .status(500)
+      .json({errorMessage: "There was an error while saving the user to the database", error })
   });
 });
 
