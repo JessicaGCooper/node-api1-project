@@ -73,14 +73,18 @@ server.put("/api/users/:id", (req, res) => {
   const {name, bio} = req.body
 
   db.update(id, req.body)
-  .then(users => { if (!users){res.status(404).json({ message: "The User with the specified ID does not exist." })
-  } else if (!req.body.name || !req.body.bio){
-    res.status(400).json({ errorMessage: "Please provide name and bio for the user." })
+  .then(users => { if (!users){
+    res.status(404)
+    .json({ message: "The User with the specified ID does not exist." })
+    } else if (!req.body.name || !req.body.bio){
+    res.status(400)
+    .json({ errorMessage: "Please provide name and bio for the user." })
     } else {
-    db.findById(user.id)  
-    .then(userData => {
-      res.status(201).json(userData)
-    })
+    db.findById(id)  
+    .then(users => {
+      res.status(200)
+      .json(users)
+      })
     }
   })
   .catch(error => {
